@@ -4,17 +4,57 @@
   <groupId>com.app.raghu</groupId>
   <artifactId>01-maven-web-app</artifactId>
   <packaging>war</packaging>
-  <version>3.0-RELEASE</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>01-maven-web-app</name>
   <url>http://maven.apache.org</url>
- 
+  
+   <repositories>  
+     <repository> 
+       <id>nexus</id>  
+       <name>remote-repository</name>   
+ <!--  <url>http://43.205.233.148:8088/repository/mss-remote-repository/</url> -->
+<!--   <url>http://43.205.233.148:8088/repository/mss-proxy-repository/</url>  -->
+       <url>http://43.204.141.67:8081/repository/mss-group-repository/</url>
+     </repository>  
+   </repositories>
+   
+
+   <properties>
+      <sonar.host.url>http://13.201.192.39:9000/</sonar.host.url>
+      <sonar.login>850e0c048adc97cc6b037048d658287d9dec6316</sonar.login>
+   </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.mss</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.0.0</version>	
+   </dependency>
+
   </dependencies>
+
+  <distributionManagement>
+    
+   <repository>
+     <id>nexus</id>
+     <name>Facebook-Release</name>
+     <url>http://43.204.141.67:8081/repository/facebook-releases/</url>
+   </repository>
+  
+   <snapshotRepository>
+     <id>nexus</id>
+     <name>Facebook-Snapshot</name>
+     <url>http://43.204.141.67:8081/repository/facebook-snapshot/</url>
+   </snapshotRepository>
+
+ </distributionManagement>   
+
   <build>
     <finalName>01-maven-web-app</finalName>
     <plugins>
