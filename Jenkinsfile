@@ -1,54 +1,32 @@
-node{
-    
-    stage('Clone repo'){
-        git credentialsId: 'GIT-Credentials', url: 'https://github.com/javabyraghu/maven-web-app.git'
+node {
+  
+  def mavenHome= tool name:"maven3.9.6"
+  
+  //CHECKOUT STAGE
+   stage('CheckOutCode'){
+   git branch: 'main', credentialsId: 'e34a898a-5df6-4ef1-a69e-6f203acb650d', url: 'https://github.com/the-learning001/maven-web-app.git'
+   }
+
+   //BUILD STAGE
+   stage('Build'){
+    sh "$mavenHome/bin/mvn clean package"
+   }
+
+   //SONARQUBE REPORT
+   stage('SonarQubeReport'){
+    sh "$mavenHome/bin/mvn sonar:sonar"
+   }
+
+   //UPLOAD THE ARTIFACT INTO ARTIFACTORY REPOSITORY
+   stage('ArtifactoryRepository'){
+    sh "$mavenHome/bin/mvn deploy"
+   }
+
+   //DEPLOY THE APP INTO TOMCAT SERVER
+   stage('DeployIntoTomcat'){
+    sshagent(['bbe4b692-c909-49be-9add-319cd05129b3']) {
+      sh "scp -o StrictHostKeyChecking=no target/01-maven-web-app.war  ec2-user@3.110.197.186:/opt/tomcat/webapps"
     }
-    
-    stage('Maven Build'){
-        def mavenHome = tool name: "Maven-3.8.6", type: "maven"
-        def mavenCMD = "${mavenHome}/bin/mvn"
-        sh "${mavenCMD} clean package"
-    }
-    
-    stage('SonarQube analysis') {       
-        withSonarQubeEnv('Sonar-Server-7.8') {
-       	sh "mvn sonar:sonar"    	
-    }
-        
-    stage('upload war to nexus'){
-	steps{
-		nexusArtifactUploader artifacts: [	
-			[
-				artifactId: '01-maven-web-app',
-				classifier: '',
-				file: 'target/01-maven-web-app.war',
-				type: war		
-			]	
-		],
-		credentialsId: 'nexus3',
-		groupId: 'in.javabyraghu',
-		nexusUrl: '',
-		protocol: 'http',
-		repository: 'javabyraghu-release'
-		version: '1.0.0'
-	}
-}
-    
-    stage('Build Image'){
-        sh 'docker build -t javabyraghu/mavenwebapp .'
-    }
-    
-    stage('Push Image'){
-        withCredentials([string(credentialsId: 'DOCKER-CREDENTIALS', variable: 'DOCKER_CREDENTIALS')]) {
-            sh 'docker login -u javabyraghu -p ${DOCKER_CREDENTIALS}'
-        }
-        sh 'docker push javabyraghu/mavenwebapp'
-    }
-    
-    stage('Deploy App'){
-        kubernetesDeploy(
-            configs: 'maven-web-app-deploy.yml',
-            kubeconfigId: 'Kube-Config'
-        )
-    }    
+   }
+
 }
