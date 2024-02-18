@@ -7,6 +7,8 @@ node {
   echo "The Build Number is: ${env.BUILD_NUMBER}"
 
   properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: '']])
+
+  properties([[$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
   
   //CHECKOUT STAGE
    stage('CheckOutCode'){
