@@ -14,13 +14,13 @@
        <name>remote-repository</name>   
  <!--  <url>http://43.205.233.148:8088/repository/mss-remote-repository/</url> -->
 <!--   <url>http://43.205.233.148:8088/repository/mss-proxy-repository/</url>  -->
-       <url>http://15.206.195.127:8081/repository/mss-group-repository/</url>
+       <url>http://15.206.178.66:8081/repository/mss-group-repository/</url>
      </repository>  
    </repositories>
    
 
    <properties>
-      <sonar.host.url>http://35.154.1.174:9000/</sonar.host.url>
+      <sonar.host.url>http://3.109.212.199:9000/</sonar.host.url>
       <sonar.login>850e0c048adc97cc6b037048d658287d9dec6316</sonar.login>
    </properties>
 
@@ -44,13 +44,13 @@
    <repository>
      <id>nexus</id>
      <name>Facebook-Release</name>
-     <url>http://15.206.195.127:8081/repository/facebook-releases/</url>
+     <url>http://15.206.178.66:8081/repository/facebook-releases/</url>
    </repository>
   
    <snapshotRepository>
      <id>nexus</id>
      <name>Facebook-Snapshot</name>
-     <url>http://15.206.195.127:8081/repository/facebook-snapshot/</url>
+     <url>http://15.206.178.66:8081/repository/facebook-snapshot/</url>
    </snapshotRepository>
 
  </distributionManagement>   
