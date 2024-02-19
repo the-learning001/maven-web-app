@@ -1,10 +1,13 @@
 node {
+  buildName 'Dev-${BUILD_NUMBER}'
+  buildDescription 'Pipeline Script - Scriptway'
   
   def mavenHome= tool name:"maven3.9.6"
 
   echo "The Node name is: ${env.NODE_NAME}"
   echo "The Job name is: ${env.JOB_NAME}"
   echo "The Build Number is: ${env.BUILD_NUMBER}"
+  
 
   properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: '']])
 
